@@ -18,7 +18,7 @@ def read_serial():
     #print a division in the csv with headers
     with open(filename, mode='a', newline='') as file: # Mode 'a' is append
         writer = csv.writer(file)
-        writer.writerow(['Computer Log Time','Cold Junction Temp (C)','Thermocouple Temp (C)'])
+        writer.writerow(['Computer Log Time', 'Thermocouple ID','Cold Junction Temp (C)','Thermocouple Temp (C)'])
 
     while True:
         if ser.in_waiting > 0:
@@ -27,13 +27,14 @@ def read_serial():
             print(f"Received:{line}")
 
             # Format the line of serial input
-            pattern = r"(\w+):(\d+(?:\.\d+)?)" # Expecting "Cold_Junction_Temp:23.70, Thermocouple_Temp:39.18"
+            pattern = r"(\w+):(\d+(?:\.\d+)?)" # Expecting "tc_id:5, Cold_Junction_Temp:23.70, Thermocouple_Temp:39.18"
             matches = re.findall(pattern,line)
-            if len(matches) == 2:
-                cold_junction_temp = float(matches[0][1])
-                thermocouple_temp = float(matches[1][1])
+            if len(matches) == 3:
+                thermocouple_id = matches[0][1]
+                cold_junction_temp = float(matches[1][1])
+                thermocouple_temp = float(matches[2][1])
                 timestamp = datetime.datetime.now()
-                log = [timestamp,cold_junction_temp,thermocouple_temp]
+                log = [timestamp,thermocouple_id,cold_junction_temp,thermocouple_temp]
             else:
                 log = line
 
