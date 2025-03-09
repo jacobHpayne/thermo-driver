@@ -60,7 +60,7 @@ void setup() {
 
 void loop() {
   for(int n = 0; n <= 5; n++){
-    Serial.print("tc#:");
+    Serial.print("tc_id:");
     Serial.print(n);
 
     Serial.print(", Cold_Junction_Temp:");
